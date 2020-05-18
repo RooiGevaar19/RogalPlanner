@@ -1,5 +1,6 @@
 *.bak
 */lib
+lib/
 *.o
 *.ppu
 *.exe
