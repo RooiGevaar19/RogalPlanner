@@ -1,0 +1,1 @@
+lazbuild rogal.lpi
