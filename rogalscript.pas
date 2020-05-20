@@ -5,18 +5,18 @@ unit RogalScript;
 interface
 
 uses
-    Classes, SysUtils, StrUtils;
+    Classes, SysUtils, StrUtils, RSUtils, DBDriver;
 
-type
-    RSEnvironment = object
+type RSEnvironment = object
     private 
-        {private declarations}
+    
     public
-     {public declarations}
+        Settings : RSSettings;
+        Database : RSDatabase;
         constructor create;
         destructor destroy;
         function runCommand(input : String) : String;
-    end;
+end;
 
 implementation
 
@@ -39,28 +39,31 @@ end;
 
 constructor RSEnvironment.create;
 begin
-    writeln('RogalScript Environment activated.');
+    Database.Create();
 end;
 
 destructor RSEnvironment.destroy;
 begin
-   writeln('RogalScript Environment stopped working.');
+    Database.Destroy();
 end;
 
 function RSEnvironment.runCommand(input : String) : String;
 var
     L : TStringArray;
 begin
-    L := input.Split([' ', #9, #13, #10], '"');
-    case L[0] of 
-        '\q' : ;
-        'print' : begin
-            if (LeftStr(L[1], 1) = '"') and (RightStr(L[1], 1) = '"') 
-                then writeln(string_toC(L[1].Substring(1, L[1].Length - 2)))
-                else writeln(string_toC(L[1]));
+    if (input <> '') then 
+    begin
+        L := input.Split([' ', #9, #13, #10], '"');
+        case L[0] of 
+            '\q' : ;
+            'print' : begin
+                if (LeftStr(L[1], 1) = '"') and (RightStr(L[1], 1) = '"') 
+                    then writeln(string_toC(L[1].Substring(1, L[1].Length - 2)))
+                    else writeln(string_toC(L[1]));
+            end;
+            'quit' : ;
+            else writeln('Unknown command');
         end;
-        'quit' : ;
-        else writeln('Unknown command');
     end;
 end;
 

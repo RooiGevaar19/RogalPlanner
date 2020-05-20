@@ -3,7 +3,7 @@
   <ProjectSession>
     <Version Value="11"/>
     <BuildModes Active="Default"/>
-    <Units Count="2">
+    <Units Count="4">
       <Unit0>
         <Filename Value="rogal.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -16,11 +16,29 @@
         <Filename Value="rogalscript.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="RogalScript"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="3"/>
         <CursorPos X="17"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
       </Unit1>
+      <Unit2>
+        <Filename Value="rsutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="RSUtils"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="13"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="dbdriver.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DBDriver"/>
+        <EditorIndex Value="2"/>
+        <CursorPos X="8"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit3>
     </Units>
     <JumpHistory HistoryIndex="-1"/>
     <RunParams>

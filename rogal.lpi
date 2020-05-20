@@ -24,7 +24,7 @@
       <FormatVersion Value="2"/>
       <Modes Count="0"/>
     </RunParams>
-    <Units Count="2">
+    <Units Count="4">
       <Unit0>
         <Filename Value="rogal.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -34,6 +34,16 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="RogalScript"/>
       </Unit1>
+      <Unit2>
+        <Filename Value="rsutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="RSUtils"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="dbdriver.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DBDriver"/>
+      </Unit3>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
