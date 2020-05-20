@@ -10,10 +10,22 @@ uses
 type RSSettings = object
     private
         _isDevel : Boolean;
+        BaseDir  : String;
     public
         function isDevelopment() : Boolean;
         procedure setDevelopment(x : Boolean);
 end;
+
+type RSEvent = object
+    id           : Integer;
+    EventName    : String;
+    EventDate    : String;
+    RepeatsEvery : Integer;
+    Active       : Integer;
+    Info         : String;
+end;
+
+function showDialogYesNo(x : String) : Boolean;
 
 implementation
 
@@ -25,6 +37,21 @@ end;
 procedure RSSettings.setDevelopment(x : Boolean);
 begin
     _isDevel := x;
+end;
+
+function showDialogYesNo(x : String) : Boolean;
+var
+    input : Char;
+    value : Boolean;
+begin
+    value := False;
+    writeln(x);
+    repeat
+        write('Type Y or N: ');
+        readln(input);
+        if (input in ['Y', 'y']) then value := True;
+    until input in ['Y', 'N', 'y', 'n'];
+    showDialogYesNo := value;
 end;
 
 end.

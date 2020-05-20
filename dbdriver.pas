@@ -5,23 +5,24 @@ unit DBDriver;
 interface
 
 uses
-    Classes, SysUtils, IBConnection, db, sqldb, sqlite3conn;
+    Classes, SysUtils, IBConnection, db, sqldb, sqlite3conn, RSUtils;
 
 type RSDatabase = object
     private
         Conn  : TSQLConnector;
         Trans : TSQLTransaction;
         Query : TSQLQuery;
+        procedure init();
     public
         constructor Create;
         destructor Destroy;
+        function GetBaseLocation() : String;
+        procedure DropDatabase();
 end; 
 
 implementation
 
-constructor RSDatabase.Create();
-var
-    newFile : Boolean;
+procedure RSDatabase.init();
 begin
     Conn := TSQLConnector.Create(nil);
     with Conn do 
@@ -53,21 +54,27 @@ begin
                     ' id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,'+
                     ' EventName VARCHAR(50) NOT NULL, ' +
                     ' EventDate DATETIME NOT NULL, ' +
-                    ' IsCyclic INTEGER NOT NULL,' +
+                    ' RepeatsEvery SMALLINT NOT NULL DEFAULT 0,' +
+                    ' Active SMALLINT NOT NULL DEFAULT 1, ' +
                     ' Info TEXT);');
 
                 Conn.ExecuteDirect('CREATE UNIQUE INDEX "Event_id_idx" ON Event( "id" );');
 
                 Trans.Commit;
-                writeln('Succesfully created database.');
             except
-                writeln('Unable to Create new Database');
+                On E : Exception do writeln(E.ToString);
+                //writeln('Unable to Create new Database');
             end;
         end;
     except
         writeln('Unable to check if database file exists');
     end;
-    Conn.Open; 
+    Conn.Open;
+end;
+
+constructor RSDatabase.Create();
+begin
+     init();
 
 
   //Query := TSQLQuery.Create(nil);
@@ -87,9 +94,29 @@ begin
   //Trans.Commit;
 end;
 
+function RSDatabase.GetBaseLocation() : String;
+begin
+    GetBaseLocation := Conn.DatabaseName;
+end;
+
 destructor RSDatabase.Destroy();
 begin
     Conn.Destroy();
+end;
+
+procedure RSDatabase.DropDatabase();
+begin
+    try
+        Query := TSQLQuery.Create(nil);
+        Query.DataBase := Conn;
+        Query.SQL.Text := 'DROP TABLE Event';
+        Query.ExecSQL; // or Query.Open; depending whether your query is select or not
+        Trans.Commit;
+        If FileExists(Conn.DatabaseName) Then
+            DeleteFile(Conn.DatabaseName);
+    except
+        On E : Exception do writeln(E.ToString);
+    end;
 end;
 
 end.

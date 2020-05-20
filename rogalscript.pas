@@ -9,9 +9,8 @@ uses
 
 type RSEnvironment = object
     private 
-    
-    public
         Settings : RSSettings;
+    public
         Database : RSDatabase;
         constructor create;
         destructor destroy;
@@ -60,6 +59,19 @@ begin
                 if (LeftStr(L[1], 1) = '"') and (RightStr(L[1], 1) = '"') 
                     then writeln(string_toC(L[1].Substring(1, L[1].Length - 2)))
                     else writeln(string_toC(L[1]));
+            end;
+            'reset' : begin
+                if (L[1] = 'all') then
+                begin
+                    writeln();
+                    if (showDialogYesNo('Are you sure you want to drop all events and build a completely new database?'+#13#10+'Your data will be lost FOREVER!')) then
+                    begin
+                        Database.DropDatabase();
+                        Database.Create();
+                    end;
+                end else begin
+                    writeln('Type "reset all" if you want to reset all database.');
+                end;
             end;
             'quit' : ;
             else writeln('Unknown command');
