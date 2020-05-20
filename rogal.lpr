@@ -46,7 +46,7 @@ begin
     { add your program here }
     env.create();
     writeln('===[RogalPlanner]===');
-    writeln('Version 0.0.1 – May 18, 2020');
+    writeln('Version 0.0.2 – May 20, 2020');
     writeln('by RooiGevaar19 & rozirogal');
     writeln('Since 05/18/2020, proudly written in FreePascal. :)');
     writeln();
@@ -56,7 +56,7 @@ begin
     begin
         write('=> ');
         readln(command);
-        env.run(command);
+        env.runCommand(command);
     end;
     writeln('See you soon.');
 
