@@ -73,6 +73,9 @@ begin
                     writeln('Type "reset all" if you want to reset all database.');
                 end;
             end;
+            'test' : begin
+                Database.test();
+            end;
             'quit' : ;
             else writeln('Unknown command');
         end;

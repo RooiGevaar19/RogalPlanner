@@ -18,6 +18,8 @@ type RSDatabase = object
         destructor Destroy;
         function GetBaseLocation() : String;
         procedure DropDatabase();
+        procedure test();
+        
 end; 
 
 implementation
@@ -56,7 +58,12 @@ begin
                     ' EventDate DATETIME NOT NULL, ' +
                     ' RepeatsEvery SMALLINT NOT NULL DEFAULT 0,' +
                     ' Active SMALLINT NOT NULL DEFAULT 1, ' +
-                    ' Info TEXT);');
+                    ' Info TEXT, ' +
+                    ' BoundPeople VARCHAR(200), '+
+                    ' Address VARCHAR(200), '+
+                    ' Telephone VARCHAR(50), '+
+                    ' Mail VARCHAR(50) '+
+                    ');');
 
                 Conn.ExecuteDirect('CREATE UNIQUE INDEX "Event_id_idx" ON Event( "id" );');
 
@@ -114,6 +121,20 @@ begin
         Trans.Commit;
         If FileExists(Conn.DatabaseName) Then
             DeleteFile(Conn.DatabaseName);
+    except
+        On E : Exception do writeln(E.ToString);
+    end;
+end;
+
+procedure RSDatabase.test();
+begin
+    try
+        Query := TSQLQuery.Create(nil);
+        Query.DataBase := Conn;
+        Query.SQL.Text := 'SELECT 2+2';
+        Query.Open;
+        //Trans.Commit;
+        writeln('2+2 is *checking database* obviously ', Query.Fields[0].AsString, '! :)');
     except
         On E : Exception do writeln(E.ToString);
     end;
