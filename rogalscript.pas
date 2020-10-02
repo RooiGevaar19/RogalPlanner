@@ -5,7 +5,8 @@ unit RogalScript;
 interface
 
 uses
-    Classes, SysUtils, StrUtils, RSUtils, DBDriver;
+    Classes, SysUtils, StrUtils, RSUtils, DBDriver,
+    ModelEvent, EventHandler;
 
 type RSEnvironment = object
     private 
