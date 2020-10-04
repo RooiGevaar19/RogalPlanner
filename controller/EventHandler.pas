@@ -7,15 +7,27 @@ interface
 uses DBDriver;
 
 type
-    EventDriver = object(RSDatabase)
-        private
-            x : Integer;
+    EventDB = object(RSDatabase)
+        //private
+        //    x : Integer;
         public
-            //constructor Create;
-            //destructor Destroy;
+            constructor Create; //override;
+            destructor Destroy; //override;
     end;
 
 
 implementation
+
+constructor EventDB.Create;
+begin
+    Inherited;
+    // code
+end;
+
+destructor EventDB.Destroy;
+begin
+    // code
+    Inherited;
+end;
 
 end.

@@ -16,15 +16,6 @@ type RSSettings = object
         procedure setDevelopment(x : Boolean);
 end;
 
-type RSEvent = object
-    id           : Integer;
-    EventName    : String;
-    EventDate    : String;
-    RepeatsEvery : Integer;
-    Active       : Integer;
-    Info         : String;
-end;
-
 function showDialogYesNo(x : String) : Boolean;
 
 implementation

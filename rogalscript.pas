@@ -5,14 +5,14 @@ unit RogalScript;
 interface
 
 uses
-    Classes, SysUtils, StrUtils, RSUtils, DBDriver,
+    Classes, SysUtils, StrUtils, RSUtils,
     ModelEvent, EventHandler;
 
 type RSEnvironment = object
     private 
         Settings : RSSettings;
     public
-        Database : RSDatabase;
+        Database : EventDB;
         constructor create;
         destructor destroy;
         function runCommand(input : String) : String;
