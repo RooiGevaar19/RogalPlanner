@@ -9,7 +9,7 @@ uses
     EventModel, EventHandler;
 
 type RSEnvironment = object
-    private 
+    private
         Settings : RSSettings;
     public
         Database : EventDB;
@@ -51,13 +51,13 @@ function RSEnvironment.runCommand(input : String) : String;
 var
     L : TStringArray;
 begin
-    if (input <> '') then 
+    if (input <> '') then
     begin
         L := input.Split([' ', #9, #13, #10], '"');
-        case L[0] of 
+        case L[0] of
             '\q' : ;
             'print' : begin
-                if (LeftStr(L[1], 1) = '"') and (RightStr(L[1], 1) = '"') 
+                if (LeftStr(L[1], 1) = '"') and (RightStr(L[1], 1) = '"')
                     then writeln(string_toC(L[1].Substring(1, L[1].Length - 2)))
                     else writeln(string_toC(L[1]));
             end;
@@ -84,4 +84,5 @@ begin
 end;
 
 end.
+
 

@@ -24,34 +24,47 @@
       <FormatVersion Value="2"/>
       <Modes Count="0"/>
     </RunParams>
-    <Units Count="6">
+    <Units Count="10">
       <Unit0>
         <Filename Value="rogal.lpr"/>
         <IsPartOfProject Value="True"/>
       </Unit0>
       <Unit1>
-        <Filename Value="rogalscript.pas"/>
+        <Filename Value="model/EventModel.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="RogalScript"/>
       </Unit1>
       <Unit2>
-        <Filename Value="rsutils.pas"/>
+        <Filename Value="controller/EventHandler.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="RSUtils"/>
       </Unit2>
       <Unit3>
-        <Filename Value="dbdriver.pas"/>
+        <Filename Value="model/TagModel.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="DBDriver"/>
       </Unit3>
       <Unit4>
-        <Filename Value="model/ModelEvent.pas"/>
+        <Filename Value="model/TagAssignmentModel.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit4>
       <Unit5>
-        <Filename Value="controller/EventHandler.pas"/>
+        <Filename Value="controller/TagHandler.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit5>
+      <Unit6>
+        <Filename Value="controller/TagAssignmentHandler.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="controller/DBDriver.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="lang/RogalScript.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="lang/RSUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit9>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -61,7 +74,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="model;controller"/>
+      <OtherUnitFiles Value="model;controller;lang"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
   </CompilerOptions>

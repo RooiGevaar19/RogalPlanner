@@ -19,15 +19,15 @@ type RSDatabase = object
         function GetBaseLocation() : String;
         procedure DropDatabase();
         procedure test();
-        
-end; 
+
+end;
 
 implementation
 
 procedure RSDatabase.init();
 begin
     Conn := TSQLConnector.Create(nil);
-    with Conn do 
+    with Conn do
     begin
         ConnectorType := 'SQLite3';
         HostName := ''; // not important
@@ -40,12 +40,12 @@ begin
     Conn.Transaction := Trans;
 
 
-    Conn.Close; 
+    Conn.Close;
     try
         If Not DirectoryExists(GetAppConfigDir(false)) then
             If Not CreateDir (GetAppConfigDir(false)) Then
                 writeln('Failed to set up a directory for the database.');
-        
+
         if not FileExists(Conn.DatabaseName) then
         begin
             try
@@ -89,7 +89,7 @@ begin
   //Query.SQL.Text := 'insert your sql query here';
   //// Query.ParamByName('...').AsWhatever := ... fill if you use parameterized query
   //Query.ExecSQL; // or Query.Open; depending whether your query is select or not
- 
+
   // for select query
   // while not Query.EOF do begin
   // do whatever you want, access row field with Query.FieldByName('...').AsWhatever
@@ -141,4 +141,5 @@ begin
 end;
 
 end.
+
 

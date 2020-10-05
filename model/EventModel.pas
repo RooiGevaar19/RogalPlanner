@@ -1,4 +1,4 @@
-unit ModelEvent;
+unit EventModel;
 
 {$mode objfpc}{$H+}
 
