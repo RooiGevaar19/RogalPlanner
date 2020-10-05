@@ -84,6 +84,9 @@ end;
 
 var
   Application: TRogalPlanner;
+
+{$R *.res}
+
 begin
   Application:=TRogalPlanner.Create(nil);
   Application.Title:='RogalPlanner';
