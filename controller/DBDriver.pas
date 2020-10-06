@@ -8,7 +8,7 @@ uses
     Classes, SysUtils, IBConnection, db, sqldb, sqlite3conn, RSUtils;
 
 type RSDatabase = object
-    private
+    protected
         Conn  : TSQLConnector;
         Trans : TSQLTransaction;
         Query : TSQLQuery;
@@ -65,7 +65,15 @@ begin
                     ' Mail VARCHAR(50) '+
                     ');');
 
-                Conn.ExecuteDirect('CREATE UNIQUE INDEX "Event_id_idx" ON Event( "id" );');
+                //Conn.ExecuteDirect('CREATE UNIQUE INDEX "Event_id_idx" ON Event( "id" );');
+
+                Conn.ExecuteDirect('CREATE TABLE Tag('+
+                    ' id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,'+
+                    ' Name VARCHAR(50) NOT NULL, ' +
+                    ' Color VARCHAR(50) NOT NULL ' +
+                    ');');
+
+                //Conn.ExecuteDirect('CREATE UNIQUE INDEX "Tag_id_idx" ON Tag( "id" );');
 
                 Trans.Commit;
             except

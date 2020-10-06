@@ -46,7 +46,7 @@ begin
     { add your program here }
     env.create();
     writeln('===[RogalPlanner]===');
-    writeln('Version 0.0.5 – October 5, 2020');
+    writeln('Version 0.0.6 – October 6, 2020');
     writeln('by RooiGevaar19 & rozirogal');
     writeln('Since 05/18/2020, proudly written in FreePascal. :)');
     writeln();
@@ -67,30 +67,29 @@ end;
 
 constructor TRogalPlanner.Create(TheOwner: TComponent);
 begin
-  inherited Create(TheOwner);
-  StopOnException:=True;
+    inherited Create(TheOwner);
+    StopOnException:=True;
 end;
 
 destructor TRogalPlanner.Destroy;
 begin
-  inherited Destroy;
+    inherited Destroy;
 end;
 
 procedure TRogalPlanner.WriteHelp;
 begin
-  { add your help code here }
-  writeln('Usage: ', ExeName, ' -h');
+    { add your help code here }
+    writeln('Usage: ', ExeName, ' -h');
 end;
 
-var
-  Application: TRogalPlanner;
+var Application: TRogalPlanner;
 
 {$R *.res}
 
 begin
-  Application:=TRogalPlanner.Create(nil);
-  Application.Title:='RogalPlanner';
-  Application.Run;
-  Application.Free;
+    Application:=TRogalPlanner.Create(nil);
+    Application.Title:='RogalPlanner';
+    Application.Run;
+    Application.Free;
 end.
 

@@ -6,7 +6,8 @@ interface
 
 uses
     Classes, SysUtils, StrUtils, RSUtils,
-    EventModel, EventHandler;
+    EventModel, EventHandler,
+    TagModel, TagHandler;
 
 type RSEnvironment = object
     private
@@ -35,6 +36,34 @@ begin
 	dupa := StringReplace(dupa, '\"', #34, [rfReplaceAll]);
 	dupa := StringReplace(dupa, '\?', '?', [rfReplaceAll]);
 	string_toC := dupa;
+end;
+
+procedure doCreateTag(name, color : String);
+var
+    db  : TagDB;
+    pom : Tag;
+begin
+    db.Create;
+    pom.setName(name);
+    pom.setColor(color);
+    db.insert(pom);
+    db.Destroy;
+end;
+
+procedure doGetAllTags();
+var
+    db  : TagDB;
+    pom : TTags;
+    i   : Tag;
+begin
+    db.Create;
+    pom := db.findAll();
+    for i in pom do
+    begin
+        write(i.getName()+#9);
+    end;
+    writeln();
+    db.Destroy;
 end;
 
 constructor RSEnvironment.create;
@@ -76,6 +105,27 @@ begin
             end;
             'test' : begin
                 Database.test();
+            end;
+            'create' : begin
+                case L[1] of
+                    'tag' : begin
+                        if (LeftStr(L[2], 1) = '"') and (RightStr(L[2], 1) = '"') 
+                            then doCreateTag(string_toC(L[2].Substring(1, L[2].Length - 2)), 'Default')
+                            else writeln('Error: the name must be quoted.');
+                    end;
+                    else writeln('syntax: create (tag) "name"');
+                end;
+            end;
+            'get' : begin
+                case L[1] of
+                    'all' : begin
+                        case L[2] of
+                            'tags' : begin
+                                doGetAllTags();
+                            end;
+                        end;
+                    end;
+                end;
             end;
             'quit' : ;
             else writeln('Unknown command');

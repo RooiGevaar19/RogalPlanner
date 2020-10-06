@@ -4,12 +4,14 @@ unit EventHandler;
 
 interface
 
-uses DBDriver;
+uses Classes, SysUtils,  
+    DBDriver, EventModel,
+    IBConnection, db, sqldb, sqlite3conn, RSUtils;
 
 type
     EventDB = object(RSDatabase)
-        //private
-        //    x : Integer;
+        private
+            Collection : array of Event;
         public
             constructor Create; //override;
             destructor Destroy; //override;
@@ -21,12 +23,14 @@ implementation
 constructor EventDB.Create;
 begin
     Inherited;
+    SetLength(Collection, 0);
     // code
 end;
 
 destructor EventDB.Destroy;
 begin
     // code
+    SetLength(Collection, 0);
     Inherited;
 end;
 

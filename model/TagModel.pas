@@ -6,7 +6,7 @@ interface
 
 uses Classes, SysUtils;
 
-type Tag = class
+type Tag = object
     private
         id    : LongInt;
         Name  : String;
@@ -18,6 +18,7 @@ type Tag = class
         function  getName() : String;
         procedure setColor(val : String);
         function  getColor() : String;
+end;
 
 implementation
 
