@@ -16,3 +16,10 @@ Since 5/18/2020, proudly written in FreePascal :smile:
 ## Before you use:
 - Windows users need to have installed **SQLite3** or attached a `SQLite3.dll` file alongside the `rogal.exe` executable.
 - Linux users need to have installed **SQLite3**
+
+## Current functions
+
+**Tag management**:
+- `create tag "name"`
+- `get all tags`
+- `delete tag #id`

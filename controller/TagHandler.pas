@@ -29,6 +29,7 @@ implementation
 constructor TagDB.Create;
 begin
     Inherited;
+    dbname := 'Tag';
     // code
 end;
 
@@ -74,7 +75,7 @@ begin
     try
         Query := TSQLQuery.Create(nil);
         Query.DataBase := Conn;
-        Query.SQL.Text := 'DELETE FROM Tags WHERE id = :id';
+        Query.SQL.Text := 'DELETE FROM Tag WHERE id = :id';
         Query.ParamByName('id').AsInteger := id;
         Query.ExecSQL;
         Trans.Commit;

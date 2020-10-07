@@ -9,9 +9,10 @@ uses
 
 type RSDatabase = object
     protected
-        Conn  : TSQLConnector;
-        Trans : TSQLTransaction;
-        Query : TSQLQuery;
+        Conn   : TSQLConnector;
+        Trans  : TSQLTransaction;
+        Query  : TSQLQuery;
+        dbname : String;
         procedure init();
     public
         constructor Create;
@@ -122,11 +123,11 @@ end;
 procedure RSDatabase.DropDatabase();
 begin
     try
-        Query := TSQLQuery.Create(nil);
-        Query.DataBase := Conn;
-        Query.SQL.Text := 'DROP TABLE Event';
-        Query.ExecSQL; // or Query.Open; depending whether your query is select or not
-        Trans.Commit;
+        //Query := TSQLQuery.Create(nil);
+        //Query.DataBase := Conn;
+        //Query.SQL.Text := 'DROP TABLE '+dbname;
+        //Query.ExecSQL; // or Query.Open; depending whether your query is select or not
+        //Trans.Commit;
         If FileExists(Conn.DatabaseName) Then
             DeleteFile(Conn.DatabaseName);
     except

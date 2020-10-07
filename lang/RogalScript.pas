@@ -9,17 +9,48 @@ uses
     EventModel, EventHandler,
     TagModel, TagHandler;
 
+type RogalDB = object
+    public
+        Tags : TagDB;
+        constructor create;
+        destructor destroy;
+        procedure resetAll();
+        procedure test();
+end;
+
 type RSEnvironment = object
     private
         Settings : RSSettings;
     public
-        Database : EventDB;
+        Database : RogalDB;
         constructor create;
         destructor destroy;
         function runCommand(input : String) : String;
 end;
 
 implementation
+
+constructor RogalDB.create;
+begin
+    Tags.Create();
+end;
+
+destructor RogalDB.destroy;
+begin
+    Tags.Destroy();
+end;
+
+procedure RogalDB.resetAll();
+begin
+    Tags.DropDatabase();
+    Tags.Create();
+end;
+
+procedure RogalDB.test();
+begin
+    Tags.test();
+end;
+
 
 function string_toC(dupa : String) : String;
 begin
@@ -38,32 +69,31 @@ begin
 	string_toC := dupa;
 end;
 
-procedure doCreateTag(name, color : String);
+procedure doCreateTag(var db : TagDB; name, color : String);
 var
-    db  : TagDB;
     pom : Tag;
 begin
-    db.Create;
     pom.setName(name);
     pom.setColor(color);
     db.insert(pom);
-    db.Destroy;
 end;
 
-procedure doGetAllTags();
+procedure doGetTags(var db : TagDB; count : Integer = 0);
 var
-    db  : TagDB;
     pom : TTags;
     i   : Tag;
 begin
-    db.Create;
     pom := db.findAll();
     for i in pom do
     begin
-        write(i.getName()+#9);
+        writeln('[#',i.getID,'] ',i.getName());
     end;
     writeln();
-    db.Destroy;
+end;
+
+procedure doDeleteTagsByID(var db : TagDB; id : Integer);
+begin
+    db.deleteByID(id);
 end;
 
 constructor RSEnvironment.create;
@@ -96,8 +126,7 @@ begin
                     writeln();
                     if (showDialogYesNo('Are you sure you want to drop all events and build a completely new database?'+#13#10+'Your data will be lost FOREVER!')) then
                     begin
-                        Database.DropDatabase();
-                        Database.Create();
+                        Database.resetAll();
                     end;
                 end else begin
                     writeln('Type "reset all" if you want to reset all database.');
@@ -110,10 +139,23 @@ begin
                 case L[1] of
                     'tag' : begin
                         if (LeftStr(L[2], 1) = '"') and (RightStr(L[2], 1) = '"') 
-                            then doCreateTag(string_toC(L[2].Substring(1, L[2].Length - 2)), 'Default')
+                            then doCreateTag(Database.Tags, string_toC(L[2].Substring(1, L[2].Length - 2)), 'Default')
                             else writeln('Error: the name must be quoted.');
                     end;
                     else writeln('syntax: create (tag) "name"');
+                end;
+            end;
+            'delete' : begin
+                case L[1] of
+                    'tag' : begin
+                        if (LeftStr(L[2], 1) = '#') then
+                        begin
+                            doDeleteTagsByID(Database.Tags, StrToInt(L[2].Substring(1, L[2].Length - 1)));
+                        end else begin
+                            writeln('syntax: delete tag #id');  
+                        end; 
+                    end;
+                    else writeln('syntax: delete (tag) #id');
                 end;
             end;
             'get' : begin
@@ -121,9 +163,13 @@ begin
                     'all' : begin
                         case L[2] of
                             'tags' : begin
-                                doGetAllTags();
+                                doGetTags(Database.Tags, 0);
                             end;
+                            else writeln('Syntax: get all (tags)');
                         end;
+                    end;
+                    else begin
+                        writeln('Syntax: get (all) (tags)');
                     end;
                 end;
             end;

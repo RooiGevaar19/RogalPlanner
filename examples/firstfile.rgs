@@ -1,5 +1,9 @@
+reset all
 create tag "urgent"
 create tag "oaza"
 create tag "lekarze"
 create tag "rocznice"
+create tag "heh"
+get all tags
+delete tag #5
 get all tags
