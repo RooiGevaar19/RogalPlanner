@@ -83,7 +83,7 @@ var
     pom : TTags;
     i   : Tag;
 begin
-    pom := db.findAll();
+    pom := db.findAll(count);
     for i in pom do
     begin
         writeln('[#',i.getID,'] ',i.getName());
@@ -108,34 +108,15 @@ end;
 
 function RSEnvironment.runCommand(input : String) : String;
 var
-    L : TStringArray;
+    L             : TStringArray;
+    count, cursor : LongInt;
 begin
     if (input <> '') then
     begin
         L := input.Split([' ', #9, #13, #10], '"');
         case L[0] of
             '\q' : ;
-            'print' : begin
-                if (LeftStr(L[1], 1) = '"') and (RightStr(L[1], 1) = '"')
-                    then writeln(string_toC(L[1].Substring(1, L[1].Length - 2)))
-                    else writeln(string_toC(L[1]));
-            end;
-            'reset' : begin
-                if (L[1] = 'all') then
-                begin
-                    writeln();
-                    if (showDialogYesNo('Are you sure you want to drop all events and build a completely new database?'+#13#10+'Your data will be lost FOREVER!')) then
-                    begin
-                        Database.resetAll();
-                    end;
-                end else begin
-                    writeln('Type "reset all" if you want to reset all database.');
-                end;
-            end;
-            'test' : begin
-                Database.test();
-            end;
-            'create' : begin
+            'add' : begin
                 case L[1] of
                     'tag' : begin
                         if (LeftStr(L[2], 1) = '"') and (RightStr(L[2], 1) = '"') 
@@ -159,19 +140,46 @@ begin
                 end;
             end;
             'get' : begin
+                count := -1;
                 case L[1] of
                     'all' : begin
-                        case L[2] of
-                            'tags' : begin
-                                doGetTags(Database.Tags, 0);
-                            end;
-                            else writeln('Syntax: get all (tags)');
-                        end;
+                        count := 0;
+                        cursor := 2;
+                    end;
+                    'top' : begin
+                        count := StrToInt(L[2]);
+                        // work on exceptions
+                        cursor := 3;
                     end;
                     else begin
-                        writeln('Syntax: get (all) (tags)');
+                        count := 0;
+                        cursor := 1;
                     end;
                 end;
+                case L[cursor] of
+                    'tags' : doGetTags(Database.Tags, count);
+                    else writeln('Syntax: get (all|top N) (tags)');
+                end;
+            end;
+            'print' : begin
+                if (LeftStr(L[1], 1) = '"') and (RightStr(L[1], 1) = '"')
+                    then writeln(string_toC(L[1].Substring(1, L[1].Length - 2)))
+                    else writeln(string_toC(L[1]));
+            end;
+            'reset' : begin
+                if (L[1] = 'all') then
+                begin
+                    writeln();
+                    if (showDialogYesNo('Are you sure you want to drop all events and build a completely new database?'+#13#10+'Your data will be lost FOREVER!')) then
+                    begin
+                        Database.resetAll();
+                    end;
+                end else begin
+                    writeln('Type "reset all" if you want to reset all database.');
+                end;
+            end;
+            'test' : begin
+                Database.test();
             end;
             'quit' : ;
             else writeln('Unknown command');

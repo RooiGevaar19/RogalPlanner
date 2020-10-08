@@ -20,6 +20,7 @@ Since 5/18/2020, proudly written in FreePascal :smile:
 ## Current functions
 
 **Tag management**:
-- `create tag "name"`
+- `add tag "name"`
 - `get all tags`
+- `get top N tags`
 - `delete tag #id`

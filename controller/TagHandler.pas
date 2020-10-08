@@ -19,7 +19,7 @@ type TagDB = object(RSDatabase)
         procedure deleteByID(id : LongInt);
         function findByID(id : LongInt) : Tag;
         function findByName(name : String) : TTags;
-        function findAll() : TTags;
+        function findAll(count : Integer = 0) : TTags;
 end;
 
 
@@ -129,7 +129,7 @@ begin
     end;
 end;
 
-function TagDB.findAll() : TTags;
+function TagDB.findAll(count : Integer = 0) : TTags;
 var
     pom : TTags;
     i   : LongInt;
@@ -138,6 +138,7 @@ begin
         Query := TSQLQuery.Create(nil);
         Query.DataBase := Conn;
         Query.SQL.Text := 'SELECT id, Name, Color FROM Tag';
+        if count > 0 then Query.SQL.Text := Query.SQL.Text + ' LIMIT ' + IntToStr(count);
         Query.Open;
         SetLength(pom, Query.RecordCount);
         i := 0;

@@ -1,9 +1,11 @@
 reset all
-create tag "urgent"
-create tag "oaza"
-create tag "lekarze"
-create tag "rocznice"
-create tag "heh"
+add tag "pilne"
+add tag "oaza"
+add tag "lekarze"
+add tag "rocznice"
+add tag "dupa"
+add tag "studia"
+add tag "korki"
 get all tags
 delete tag #5
 get all tags
