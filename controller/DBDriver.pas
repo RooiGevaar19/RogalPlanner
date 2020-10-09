@@ -27,6 +27,7 @@ implementation
 
 procedure RSDatabase.init();
 begin
+    //writeln(GetAppConfigDir(false)+'RogalBase.db');
     Conn := TSQLConnector.Create(nil);
     with Conn do
     begin

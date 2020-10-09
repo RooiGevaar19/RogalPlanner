@@ -6,6 +6,9 @@ uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
+  {$IFDEF MSWINDOWS}
+  windows,
+  {$ENDIF}
   Classes, SysUtils, CustApp, RogalScript
   { you can add units after this };
 
@@ -46,7 +49,7 @@ begin
     { add your program here }
     env.create();
     writeln('===[RogalPlanner]===');
-    writeln('Version 0.0.8 – October 8, 2020');
+    writeln('Version 0.0.8 - October 9, 2020');
     writeln('by RooiGevaar19 & rozirogal');
     writeln('Since 05/18/2020, proudly written in FreePascal. :)');
     writeln();
@@ -91,5 +94,9 @@ begin
     Application.Title:='RogalPlanner';
     Application.Run;
     Application.Free;
+    {$IFDEF MSWINDOWS}
+    Sleep(500);
+    {$ENDIF}
+    //readln();
 end.
 

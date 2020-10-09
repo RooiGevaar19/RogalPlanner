@@ -9,3 +9,4 @@ plans.md
 trash/
 rogal
 *.dll
+**/backup/

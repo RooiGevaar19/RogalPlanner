@@ -8,7 +8,7 @@
         <Filename Value="rogal.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <CursorPos X="42" Y="9"/>
+        <CursorPos X="11" Y="10"/>
         <UsageCount Value="21"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -30,7 +30,7 @@
       <Unit3>
         <Filename Value="model/TagModel.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="6"/>
         <CursorPos X="14"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
@@ -38,7 +38,7 @@
       <Unit4>
         <Filename Value="model/TagAssignmentModel.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="7"/>
         <CursorPos X="24"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
@@ -53,7 +53,7 @@
       <Unit6>
         <Filename Value="controller/TagAssignmentHandler.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="5"/>
         <CursorPos X="26"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
@@ -61,15 +61,16 @@
       <Unit7>
         <Filename Value="controller/DBDriver.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="88"/>
-        <CursorPos X="20" Y="93"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="34"/>
+        <CursorPos X="7" Y="30"/>
         <UsageCount Value="20"/>
+        <Loaded Value="True"/>
       </Unit7>
       <Unit8>
         <Filename Value="lang/RogalScript.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="3"/>
         <TopLine Value="31"/>
         <CursorPos Y="88"/>
         <UsageCount Value="20"/>
@@ -78,7 +79,7 @@
       <Unit9>
         <Filename Value="lang/RSUtils.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="4"/>
         <CursorPos Y="50"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
