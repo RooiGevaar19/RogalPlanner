@@ -16,6 +16,7 @@ type RogalDB = object
         destructor destroy;
         procedure resetAll();
         procedure test();
+        procedure getDBLocation();
 end;
 
 type RSEnvironment = object
@@ -49,6 +50,11 @@ end;
 procedure RogalDB.test();
 begin
     Tags.test();
+end;
+
+procedure RogalDB.getDBLocation();
+begin
+    writeln(Tags.GetBaseLocation());
 end;
 
 
@@ -158,7 +164,25 @@ begin
                 end;
                 case L[cursor] of
                     'tags' : doGetTags(Database.Tags, count);
-                    else writeln('Syntax: get (all|top N) (tags)');
+                    'database' : begin
+                        case L[cursor+1] of
+                            'location' : begin
+                                Database.getDBLocation();
+                            end;
+                        end;
+                    end;
+                    'db' : begin
+                        case L[cursor+1] of
+                            'location' : begin
+                                Database.getDBLocation();
+                            end;
+                        end;
+                    end;
+                    else begin 
+                        writeln('Syntax: get');
+                        writeln('            [all|top N] (tags)');
+                        writeln('            [database|db] (location)');
+                    end;
                 end;
             end;
             'print' : begin

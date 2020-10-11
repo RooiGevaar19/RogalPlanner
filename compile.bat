@@ -7,10 +7,10 @@ goto :end
 :next
     echo.
     echo.
-    echo =================================================================================== 
+    echo ================================================================================ 
     echo Successfully compiled!
-    echo Run .\createDesktopShortcut.bat to to create a Desktop shortcut of the application.
-    echo ===================================================================================
+    echo Run createDesktopShortcut.bat to to create a Desktop shortcut of the application
+    echo ================================================================================
 
 :end
     pause

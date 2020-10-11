@@ -23,4 +23,6 @@ Since 5/18/2020, proudly written in FreePascal :smile:
 - `add tag "name"`
 - `get all tags`
 - `get top N tags`
+- `get database location`
+- `get db location`
 - `delete tag #id`
