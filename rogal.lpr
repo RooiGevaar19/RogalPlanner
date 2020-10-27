@@ -58,7 +58,7 @@ begin
         writeln();
         writeln('Type "\q" or "\quit" to quit the program.');
         writeln();
-        while (command <> '\q') and (command <> 'quit') do
+        while (command <> '\q') and (command <> '\quit') do
         begin
             write('=> ');
             readln(command);

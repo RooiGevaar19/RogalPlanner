@@ -9,6 +9,6 @@ if [ $? -eq 0 ] ; then
 	echo
 	echo "=============================================================================="
 	echo "Successfully compiled!"
-	echo "Run createDesktopShortcut.sh\ to create a Desktop shortcut of the application."
+	echo "Run createDesktopShortcut.sh to create a Desktop shortcut of the application."
 	echo "=============================================================================="
 fi
