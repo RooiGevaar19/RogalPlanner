@@ -9,6 +9,8 @@ uses
     EventModel, EventHandler,
     TagModel, TagHandler;
 
+type QueryEntity = (Nothing, Tags);
+
 type RogalDB = object
     public
         Tags : TagDB;
@@ -26,7 +28,9 @@ type RSEnvironment = object
         Database : RogalDB;
         constructor create;
         destructor destroy;
-        function runCommand(input : String) : String;
+        procedure runCommand(input : String);
+        procedure runFromString(str : String);
+        procedure runFile(filename : String);
 end;
 
 implementation
@@ -57,6 +61,16 @@ begin
     writeln(Tags.GetBaseLocation());
 end;
 
+// ========== Utilities
+
+function checkLevel(input : String) : Integer;
+begin
+         if (LeftStr(input, 1) = '(') 
+        and (RightStr(input, 1) = ')') then Result := 0
+    else if (LeftStr(input, 1) = '(')  then Result := 1
+    else if (RightStr(input, 1) = ')') then Result := -1
+    else Result := 0;
+end;
 
 function string_toC(dupa : String) : String;
 begin
@@ -84,12 +98,12 @@ begin
     db.insert(pom);
 end;
 
-procedure doGetTags(var db : TagDB; count : Integer = 0);
+procedure doGetTags(var db : TagDB; count : Integer = 0; conditions : String = '');
 var
     pom : TTags;
     i   : Tag;
 begin
-    pom := db.findAll(count);
+    pom := db.findAll(count, conditions);
     for i in pom do
     begin
         writeln('[#',i.getID,'] ',i.getName());
@@ -102,6 +116,8 @@ begin
     db.deleteByID(id);
 end;
 
+// ================ Environment
+
 constructor RSEnvironment.create;
 begin
     Database.Create();
@@ -112,20 +128,22 @@ begin
     Database.Destroy();
 end;
 
-function RSEnvironment.runCommand(input : String) : String;
+procedure RSEnvironment.runCommand(input : String);
 var
     L             : TStringArray;
     count, cursor : LongInt;
+    whattoget     : QueryEntity;
+    nestlv        : ShortInt;
+	nesttx        : String;
 begin
     if (input <> '') then
     begin
-        L := input.Split([' ', #9, #13, #10], '"');
+        L := input.Split([' ', #9, #13, #10], '''');
         case L[0] of
-            '\q' : ;
             'add' : begin
                 case L[1] of
                     'tag' : begin
-                        if (LeftStr(L[2], 1) = '"') and (RightStr(L[2], 1) = '"') 
+                        if (LeftStr(L[2], 1) = '''') and (RightStr(L[2], 1) = '''') 
                             then doCreateTag(Database.Tags, string_toC(L[2].Substring(1, L[2].Length - 2)), 'Default')
                             else writeln('Error: the name must be quoted.');
                     end;
@@ -163,8 +181,13 @@ begin
                     end;
                 end;
                 case L[cursor] of
-                    'tags' : doGetTags(Database.Tags, count);
+                    'tags' : begin
+                        whattoget := Tags;
+                        cursor := cursor + 1;
+                        
+                    end;
                     'database' : begin
+                        whattoget := Nothing;
                         case L[cursor+1] of
                             'location' : begin
                                 Database.getDBLocation();
@@ -172,6 +195,7 @@ begin
                         end;
                     end;
                     'db' : begin
+                        whattoget := Nothing;
                         case L[cursor+1] of
                             'location' : begin
                                 Database.getDBLocation();
@@ -179,14 +203,39 @@ begin
                         end;
                     end;
                     else begin 
+                        whattoget := Nothing;
                         writeln('Syntax: get');
                         writeln('            [all|top N] (tags)');
                         writeln('            [database|db] (location)');
                     end;
                 end;
+
+                if (whattoget <> Nothing) then
+                begin
+                    nesttx := '';
+                    if (cursor < Length(L)) then
+                    begin
+                        case L[cursor] of
+                            'of' : begin
+                                nestlv := 0;
+                                nesttx := '';
+                                cursor := cursor + 1;
+                                while (nestlv >= 0) and (cursor < Length(L)) do begin
+                                    nestlv := nestlv + checkLevel(L[cursor]);
+				                	if (nestlv >= 0) then nesttx := nesttx + ' ' + L[cursor];
+                                    Inc(cursor);
+                                end;
+                                //doGetTags(Database.Tags, count, nesttx);
+                            end;
+                        end;
+                    end;
+                    case whattoget of
+                        Tags : doGetTags(Database.Tags, count, nesttx);
+                    end;
+                end;
             end;
             'print' : begin
-                if (LeftStr(L[1], 1) = '"') and (RightStr(L[1], 1) = '"')
+                if (LeftStr(L[1], 1) = '''') and (RightStr(L[1], 1) = '''')
                     then writeln(string_toC(L[1].Substring(1, L[1].Length - 2)))
                     else writeln(string_toC(L[1]));
             end;
@@ -205,10 +254,42 @@ begin
             'test' : begin
                 Database.test();
             end;
-            'quit' : ;
             else writeln('Unknown command');
         end;
     end;
+end;
+
+procedure RSEnvironment.runFromString(str : String);
+var
+    L : TStringArray;
+    i : String;
+begin
+    if (str <> '') then
+    begin
+        L := str.Split([';'], '''');
+        for i in L do runCommand(trim(i));
+    end;
+end;
+
+procedure RSEnvironment.runFile(filename : String);
+var
+    fun, S : String;
+    fp     : Text;
+begin
+    fun := '';
+    assignfile(fp, filename);
+    reset(fp);
+    while not eof(fp) do
+    begin
+        readln(fp, S);
+        //if (S <> '') then S := cutCommentMultiline(S);
+        //S := DelChars(S, #13);
+        //S := DelChars(S, #10);
+        S := trim(S);
+        fun := fun + #10 + S;
+    end;
+    closefile(fp);
+    runFromString(fun);
 end;
 
 end.

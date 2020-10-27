@@ -16,13 +16,18 @@ Since 5/18/2020, proudly written in FreePascal :smile:
 ## Before you use:
 - Windows users need to have installed **SQLite3** or attached a `SQLite3.dll` file alongside the `rogal.exe` executable.
 - Linux users need to have installed **SQLite3**
+- Running file without any parameters (`./rogal`) runs a blank aplication
+- Running file with 1 parameter (`./rogal PATH_TO_FILE`) runs a script being located in `PATH_TO_FILE`. For example, `./rogal examples/base.rgs` runs `examples/base.rgs` script file.
 
 ## Current functions
 
 **Tag management**:
-- `add tag "name"`
+- `add tag 'name'`
+- `get tags`
 - `get all tags`
 - `get top N tags`
+- `get tags of (name='STR',color='Default')` – the expression between parentheses is SQL compatible
 - `get database location`
 - `get db location`
 - `delete tag #id`
+- `print 'text'`

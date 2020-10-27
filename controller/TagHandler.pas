@@ -19,7 +19,8 @@ type TagDB = object(RSDatabase)
         procedure deleteByID(id : LongInt);
         function findByID(id : LongInt) : Tag;
         function findByName(name : String) : TTags;
-        function findAll(count : Integer = 0) : TTags;
+        //function findAll(count : Integer = 0) : TTags;
+        function findAll(count : Integer = 0; conditions : String = '') : TTags;
 end;
 
 
@@ -129,7 +130,33 @@ begin
     end;
 end;
 
-function TagDB.findAll(count : Integer = 0) : TTags;
+//function TagDB.findAll(count : Integer = 0) : TTags;
+//var
+//    pom : TTags;
+//    i   : LongInt;
+//begin
+//    try
+//        Query := TSQLQuery.Create(nil);
+//        Query.DataBase := Conn;
+//        Query.SQL.Text := 'SELECT id, Name, Color FROM Tag';
+//        if count > 0 then Query.SQL.Text := Query.SQL.Text + ' LIMIT ' + IntToStr(count);
+//        Query.Open;
+//        SetLength(pom, Query.RecordCount);
+//        i := 0;
+//        while not Query.EOF do begin
+//            pom[i].setID(Query.FieldByName('id').AsInteger);
+//            pom[i].setName(Query.FieldByName('Name').AsString);
+//            pom[i].setColor(Query.FieldByName('Color').AsString);
+//            inc(i);
+//            Query.Next();
+//        end;
+//        Result := pom;
+//    except
+//        On E : Exception do writeln(E.ToString);
+//    end;
+//end;
+
+function TagDB.findAll(count : Integer = 0; conditions : String = '') : TTags;
 var
     pom : TTags;
     i   : LongInt;
@@ -138,6 +165,7 @@ begin
         Query := TSQLQuery.Create(nil);
         Query.DataBase := Conn;
         Query.SQL.Text := 'SELECT id, Name, Color FROM Tag';
+        if conditions <> '' then Query.SQL.Text := Query.SQL.Text + ' WHERE (' + conditions + ')';
         if count > 0 then Query.SQL.Text := Query.SQL.Text + ' LIMIT ' + IntToStr(count);
         Query.Open;
         SetLength(pom, Query.RecordCount);

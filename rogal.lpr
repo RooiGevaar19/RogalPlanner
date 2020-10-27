@@ -46,23 +46,31 @@ begin
       Exit;
     end;
 
-    { add your program here }
     env.create();
-    writeln('===[RogalPlanner]===');
-    writeln('Version 0.0.9 - October 10, 2020');
-    writeln('by RooiGevaar19 & rozirogal');
-    writeln('Since 05/18/2020, proudly written in FreePascal. :)');
-    writeln();
-    writeln('Type "\q" or "quit" to quit the program.');
-    writeln();
-    while (command <> '\q') and (command <> 'quit') do
+    if (ParamCount > 0) then
     begin
-        write('=> ');
-        readln(command);
-        env.runCommand(command);
+        env.runFile(ParamStr(1));
+    end else begin
+        writeln('===[RogalPlanner]===');
+        writeln('Version 0.0.10 - October 27, 2020');
+        writeln('by RooiGevaar19 & rozirogal');
+        writeln('Since 05/18/2020, proudly written in FreePascal. :)');
+        writeln();
+        writeln('Type "\q" or "\quit" to quit the program.');
+        writeln();
+        while (command <> '\q') and (command <> 'quit') do
+        begin
+            write('=> ');
+            readln(command);
+            case command of
+                '\help' : WriteHelp();
+                '\q' : ; 
+                '\quit' : ;
+                else env.runFromString(command); 
+            end;
+        end;
+        writeln('See you soon.');
     end;
-    writeln('See you soon.');
-
     // stop program loop
     env.destroy();
     Terminate;
