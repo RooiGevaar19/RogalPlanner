@@ -30,9 +30,11 @@ var
   ErrorMsg : String;
   command  : String;
   env      : RSEnvironment;
+  silent   : Boolean;
+  filemode : Boolean;
 begin
     // quick check parameters
-    ErrorMsg:=CheckOptions('h', 'help');
+    ErrorMsg:=CheckOptions('hsf:', 'helpsilentfile:');
     if ErrorMsg<>'' then begin
       ShowException(Exception.Create(ErrorMsg));
       Terminate;
@@ -46,18 +48,35 @@ begin
       Exit;
     end;
 
+    silent := False;
+    filemode := False;
+
+    if HasOption('s' ,'silent') then begin
+        silent := True;
+    end;
+
+    if HasOption('f' ,'file') then begin
+        filemode := True;
+    end;
+
     env.create();
-    if (ParamCount > 0) then
+    if not silent then
     begin
-        env.runFile(ParamStr(1));
-    end else begin
         writeln('===[RogalPlanner]===');
-        writeln('Version 0.0.10 - October 27, 2020');
+        writeln('Version 0.0.11 - October 28, 2020');
         writeln('by RooiGevaar19 & rozirogal');
         writeln('Since 05/18/2020, proudly written in FreePascal. :)');
         writeln();
-        writeln('Type "\q" or "\quit" to quit the program.');
-        writeln();
+    end;
+    if filemode then
+    begin
+        env.runFile(getOptionValue('f', 'file'));
+    end else begin
+        if not silent then
+        begin
+            writeln('Type "\q" or "\quit" to quit the program.');
+            writeln();
+        end;
         while (command <> '\q') and (command <> '\quit') do
         begin
             write('=> ');
@@ -69,7 +88,7 @@ begin
                 else env.runFromString(command); 
             end;
         end;
-        writeln('See you soon.');
+        if not silent then writeln('See you soon.');
     end;
     // stop program loop
     env.destroy();

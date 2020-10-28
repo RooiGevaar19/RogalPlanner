@@ -31,3 +31,4 @@ Since 5/18/2020, proudly written in FreePascal :smile:
 - `get db location`
 - `delete tag #id`
 - `print 'text'`
+- `run file 'path_to_file'`

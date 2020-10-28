@@ -72,6 +72,18 @@ begin
     else Result := 0;
 end;
 
+function isQuoted(input : String; qchr : Char = '''') : Boolean;
+begin
+    if (LeftStr(input, 1) = qchr) and (RightStr(input, 1) = qchr) 
+        then Result := True
+        else Result := False;
+end;
+
+function unquote(input : String) : String;
+begin
+    Result := input.Substring(1, input.Length - 2);
+end;
+
 function string_toC(dupa : String) : String;
 begin
 	dupa := StringReplace(dupa, '\a', #7, [rfReplaceAll]);
@@ -249,6 +261,18 @@ begin
                     end;
                 end else begin
                     writeln('Type "reset all" if you want to reset all database.');
+                end;
+            end;
+            'run' : begin
+                case L[1] of
+                    'file' : begin
+                        if isQuoted(L[2]) 
+                            then runFile(unquote(L[2]))
+                            else writeln('Syntax: run file ''FILE_PATH''');
+                    end;
+                    else begin
+                        writeln('aSyntax: run file ''FILE_PATH''');
+                    end;
                 end;
             end;
             'test' : begin
