@@ -263,6 +263,19 @@ begin
                     writeln('Type "reset all" if you want to reset all database.');
                 end;
             end;
+            'rogal' : begin
+                // todo: reminder on November 11
+                writeln('Make rogal, not war! 🥐❤️');
+                writeln();
+                writeln('        ___________         ');
+                writeln('   _---\           /---_    ');
+                writeln('  /     \   ^_^   /     \   ');
+                writeln(' / * *  _\-------/_  * * \  ');
+                writeln('/   *  /           \  *   \ ');
+                writeln('\     /             \     / ');
+                writeln(' \___/               \___/  ');
+                writeln();
+            end;
             'run' : begin
                 case L[1] of
                     'file' : begin
