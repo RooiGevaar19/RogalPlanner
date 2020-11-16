@@ -67,7 +67,7 @@
         <IsPartOfProject Value="True"/>
       </Unit8>
       <Unit9>
-        <Filename Value="lang/RSUtils.pas"/>
+        <Filename Value="lang/RogalConnector.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit9>
     </Units>

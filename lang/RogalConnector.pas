@@ -1,4 +1,4 @@
-unit RSUtils;
+unit RogalConnector;
 
 {$mode objfpc}{$H+}
 

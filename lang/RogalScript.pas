@@ -5,7 +5,7 @@ unit RogalScript;
 interface
 
 uses
-    Classes, SysUtils, StrUtils, RSUtils,
+    Classes, SysUtils, StrUtils, RogalConnector,
     EventModel, EventHandler,
     TagModel, TagHandler;
 
@@ -267,13 +267,14 @@ begin
                 // todo: reminder on November 11
                 writeln('Make rogal, not war! 🥐❤️');
                 writeln();
-                writeln('        ___________         ');
-                writeln('   _---\           /---_    ');
-                writeln('  /     \   ^_^   /     \   ');
-                writeln(' / * *  _\-------/_  * * \  ');
-                writeln('/   *  /           \  *   \ ');
-                writeln('\     /             \     / ');
-                writeln(' \___/               \___/  ');
+                writeln('        _______________         ');
+                writeln('    _---\             /---_     ');
+                writeln('   / \   \    ^_^    /   / \    ');
+                writeln('  /   \   \         /   /   \   ');
+                writeln(' /     \___\       /___/     \  ');
+                writeln('/ * *  /    \-----/    \  * * \ ');
+                writeln('\  *  /                 \  *  / ');
+                writeln(' \___/                   \___/  ');
                 writeln();
             end;
             'run' : begin
