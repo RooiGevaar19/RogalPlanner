@@ -260,7 +260,7 @@ begin
                         Database.resetAll();
                     end;
                 end else begin
-                    writeln('Type "reset all" if you want to reset all database.');
+                    printMessage('Type "reset all" if you want to reset all database.');
                 end;
             end;
             'rogal' : begin
