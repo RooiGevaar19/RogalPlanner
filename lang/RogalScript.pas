@@ -9,7 +9,8 @@ uses
     EventModel, EventHandler,
     TagModel, TagHandler;
 
-type QueryEntity = (Nothing, Tags);
+type QueryEntity = (Nothing, AllSyntax, SingleSyntax, MultiSyntax,
+                    Tag1, Tags);
 
 type RogalDB = object
     public
@@ -175,6 +176,21 @@ begin
                     else writeln('syntax: delete (tag) #id');
                 end;
             end;
+            'edit' : begin
+                case L[1] of
+                    'tag' : begin
+                        if (LeftStr(L[2], 1) = '#') then
+                        begin
+                            writeln('hehe');
+                            //
+                            //doDeleteTagsByID(Database.Tags, StrToInt(L[2].Substring(1, L[2].Length - 1)));
+                        end else begin
+                            writeln('syntax: delete tag #id');  
+                        end; 
+                    end;
+                    else writeln('syntax: edit tag #id ( sql-syntax )');
+                end;
+            end;
             'get' : begin
                 count := -1;
                 case L[1] of
@@ -193,10 +209,13 @@ begin
                     end;
                 end;
                 case L[cursor] of
+                    'tag' : begin
+                        whattoget := Tag1;
+                        cursor := cursor + 1;
+                    end;
                     'tags' : begin
                         whattoget := Tags;
                         cursor := cursor + 1;
-                        
                     end;
                     'database' : begin
                         whattoget := Nothing;
@@ -215,34 +234,63 @@ begin
                         end;
                     end;
                     else begin 
-                        whattoget := Nothing;
-                        writeln('Syntax: get');
-                        writeln('            [all|top N] (tags)');
-                        writeln('            [database|db] (location)');
+                        whattoget := AllSyntax;
                     end;
                 end;
 
                 if (whattoget <> Nothing) then
                 begin
-                    nesttx := '';
-                    if (cursor < Length(L)) then
+                    if (whattoget in [Tag1]) then
                     begin
-                        case L[cursor] of
-                            'of' : begin
-                                nestlv := 0;
-                                nesttx := '';
-                                cursor := cursor + 1;
-                                while (nestlv >= 0) and (cursor < Length(L)) do begin
-                                    nestlv := nestlv + checkLevel(L[cursor]);
-				                	if (nestlv >= 0) then nesttx := nesttx + ' ' + L[cursor];
-                                    Inc(cursor);
+                        if (cursor < Length(L)) and (LeftStr(L[cursor], 1) = '#') then
+                        begin
+                            nesttx := 'id='+RightStr(L[cursor], Length(L[cursor])-1);
+                        end else begin
+                            whattoget := SingleSyntax;
+                        end;
+                    end else if (whattoget in [Tags]) then begin
+                        nesttx := '';
+                        if (cursor < Length(L)) then
+                        begin
+                            case L[cursor] of
+                                'of' : begin
+                                    if LeftStr(L[cursor+1], 1) = '(' then
+                                    begin
+                                        nestlv := 0;
+                                        nesttx := '';
+                                        cursor := cursor + 1;
+                                        while (nestlv >= 0) and (cursor < Length(L)) do begin
+                                            nestlv := nestlv + checkLevel(L[cursor]);
+				                        	if (nestlv >= 0) then nesttx := nesttx + ' ' + L[cursor];
+                                            Inc(cursor);
+                                        end;
+                                    end else begin
+                                        whattoget := MultiSyntax;
+                                    end;
                                 end;
-                                //doGetTags(Database.Tags, count, nesttx);
+                                else begin 
+                                    whattoget := MultiSyntax;
+                                end;
                             end;
                         end;
-                    end;
+                    end; 
+                    
                     case whattoget of
                         Tags : doGetTags(Database.Tags, count, nesttx);
+                        Tag1 : doGetTags(Database.Tags, 1, nesttx);
+                        AllSyntax : begin
+                            writeln('Syntax: get');
+                            writeln('          | tag #id');
+                            writeln('          | [all|top N] tags [of (sql_conditions)]');
+                            writeln('          | database location');
+                            writeln('          | db location');
+                        end;
+                        SingleSyntax : begin
+                            writeln('Syntax: get tag #id');
+                        end;
+                        MultiSyntax : begin
+                            writeln('Syntax: get [all|top N] tags [of (sql_conditions)]');
+                        end;
                     end;
                 end;
             end;
