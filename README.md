@@ -33,3 +33,6 @@ Since 5/18/2020, proudly written in FreePascal :smile:
 - `delete tag #id`
 - `print 'text'`
 - `run file 'path_to_file'`
+
+**Console app commands:**
+- `\q` – quit the app
