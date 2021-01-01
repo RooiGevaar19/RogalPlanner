@@ -64,7 +64,7 @@ begin
     if not silent then
     begin
         writeln('===[RogalPlanner]===');
-        writeln('Version 0.0.12 - December 16, 2020');
+        writeln('Version 0.0.12 - January 1, 2021');
         writeln('by RooiGevaar19 & rozirogal');
         writeln('Since 05/18/2020, proudly written in FreePascal. :)');
         writeln();
@@ -74,7 +74,14 @@ begin
             writeln('Spend your time with the people you care! ❤️🎅🎁⛪');
             writeln();
         end;
-        if ((m = 12) and (d in [30, 31])) or ((m = 1) and (d in [1, 2])) then begin
+        if ((m = 12) and (d in [30, 31])) then begin
+            writeln('I wish you Happy New Year! 🥐❤️');
+            if (isLeapYear(y+1)) 
+                then writeln('Enjoy the next 366 days. Hope I will help you when you need it! ❤️🎉📅')
+                else writeln('Enjoy the next 365 days. Hope I will help you when you need it! ❤️🎉📅');
+            writeln();
+        end;
+        if ((m = 1) and (d in [1, 2])) then begin
             writeln('I wish you Happy New Year! 🥐❤️');
             if (isLeapYear(y)) 
                 then writeln('Enjoy the next 366 days. Hope I will help you when you need it! ❤️🎉📅')
