@@ -185,7 +185,7 @@ begin
                             //
                             //doDeleteTagsByID(Database.Tags, StrToInt(L[2].Substring(1, L[2].Length - 1)));
                         end else begin
-                            writeln('syntax: delete tag #id');  
+                            writeln('syntax: edit tag #id');  
                         end; 
                     end;
                     else writeln('syntax: edit tag #id ( sql-syntax )');
@@ -267,6 +267,16 @@ begin
                                     end else begin
                                         whattoget := MultiSyntax;
                                     end;
+                                end; 
+                                'by' : begin
+                                    case L[cursor+1] of
+                                        'name' : begin
+                                            nesttx := 'Name LIKE '''+L[cursor+2]+'''';
+                                        end;
+                                        else begin
+                                            whattoget := MultiSyntax;
+                                        end;
+                                    end;
                                 end;
                                 else begin 
                                     whattoget := MultiSyntax;
@@ -281,7 +291,9 @@ begin
                         AllSyntax : begin
                             writeln('Syntax: get');
                             writeln('          | tag #id');
-                            writeln('          | [all|top N] tags [of (sql_conditions)]');
+                            writeln('          | [all|top N] tags ');
+                            writeln('                           | [of (SQL_CONDTITIONS)]');
+                            writeln('                           | [by name REGEXP]');
                             writeln('          | database location');
                             writeln('          | db location');
                         end;
@@ -289,7 +301,9 @@ begin
                             writeln('Syntax: get tag #id');
                         end;
                         MultiSyntax : begin
-                            writeln('Syntax: get [all|top N] tags [of (sql_conditions)]');
+                            writeln('Syntax: get [all|top N] tags ');
+                            writeln('                           | [of (SQL_CONDTITIONS)]');
+                            writeln('                           | [by name REGEXP]');
                         end;
                     end;
                 end;

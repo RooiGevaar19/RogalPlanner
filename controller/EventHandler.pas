@@ -6,7 +6,7 @@ interface
 
 uses Classes, SysUtils,  
     DBDriver, EventModel,
-    IBConnection, db, sqldb, sqlite3conn, RSUtils;
+    IBConnection, db, sqldb, sqlite3conn;
 
 type
     EventDB = object(RSDatabase)

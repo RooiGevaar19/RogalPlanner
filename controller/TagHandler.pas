@@ -6,7 +6,7 @@ interface
 
 uses Classes, SysUtils, 
     DBDriver, TagModel,
-    IBConnection, db, sqldb, sqlite3conn, RSUtils;
+    IBConnection, db, sqldb, sqlite3conn;
 
 type TTags = array of Tag;
 

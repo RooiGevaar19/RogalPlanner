@@ -64,7 +64,7 @@ begin
     if not silent then
     begin
         writeln('===[RogalPlanner]===');
-        writeln('Version 0.0.12 - January 1, 2021');
+        writeln('Version 0.0.12 - April 24, 2021');
         writeln('by RooiGevaar19 & rozirogal');
         writeln('Since 05/18/2020, proudly written in FreePascal. :)');
         writeln();

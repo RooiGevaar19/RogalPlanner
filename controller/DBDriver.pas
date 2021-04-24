@@ -5,7 +5,7 @@ unit DBDriver;
 interface
 
 uses
-    Classes, SysUtils, IBConnection, db, sqldb, sqlite3conn, RSUtils;
+    Classes, SysUtils, IBConnection, db, sqldb, sqlite3conn;
 
 type RSDatabase = object
     protected
