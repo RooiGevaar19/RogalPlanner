@@ -124,7 +124,25 @@ begin
     writeln();
 end;
 
-procedure doDeleteTagsByID(var db : TagDB; id : Integer);
+procedure doEditTagName(var db : TagDB; id : LongInt; newvalue : String);
+var
+    item : Tag;
+begin
+    item := db.findByID(id);
+    item.setName(newvalue);
+    db.updateByID(id, item);
+end;
+
+procedure doEditTagColor(var db : TagDB; id : LongInt; newvalue : String);
+var
+    item : Tag;
+begin
+    item := db.findByID(id);
+    item.setColor(newvalue);
+    db.updateByID(id, item);
+end;
+
+procedure doDeleteTagsByID(var db : TagDB; id : LongInt);
 begin
     db.deleteByID(id);
 end;
@@ -145,9 +163,10 @@ procedure RSEnvironment.runCommand(input : String);
 var
     L             : TStringArray;
     count, cursor : LongInt;
-    whattoget     : QueryEntity;
+    whattodo      : QueryEntity;
     nestlv        : ShortInt;
 	nesttx        : String;
+    id            : LongInt;
 begin
     if (input <> '') then
     begin
@@ -160,7 +179,7 @@ begin
                             then doCreateTag(Database.Tags, string_toC(L[2].Substring(1, L[2].Length - 2)), 'Default')
                             else writeln('Error: the name must be quoted.');
                     end;
-                    else writeln('syntax: create (tag) "name"');
+                    else writeln('syntax: create (tag) ''name''');
                 end;
             end;
             'delete' : begin
@@ -170,25 +189,66 @@ begin
                         begin
                             doDeleteTagsByID(Database.Tags, StrToInt(L[2].Substring(1, L[2].Length - 1)));
                         end else begin
-                            writeln('syntax: delete tag #id');  
+                            writeln('syntax: delete tag #ID');  
                         end; 
                     end;
-                    else writeln('syntax: delete (tag) #id');
+                    else writeln('syntax: delete (tag) #ID');
                 end;
             end;
             'edit' : begin
-                case L[1] of
+                cursor := 1;
+                case L[cursor] of
                     'tag' : begin
-                        if (LeftStr(L[2], 1) = '#') then
-                        begin
-                            writeln('hehe');
-                            //
-                            //doDeleteTagsByID(Database.Tags, StrToInt(L[2].Substring(1, L[2].Length - 1)));
-                        end else begin
-                            writeln('syntax: edit tag #id');  
-                        end; 
+                        whattodo := Tag1;
+                        cursor := cursor + 1;
                     end;
-                    else writeln('syntax: edit tag #id ( sql-syntax )');
+                    else begin 
+                        whattodo := AllSyntax;
+                    end;
+                end;
+
+                if (whattodo <> Nothing) then
+                begin
+                    if (whattodo in [Tag1]) then
+                    begin
+                        if (cursor+3 < Length(L)) and (LeftStr(L[cursor], 1) = '#') then
+                        begin
+                            id := StrToInt(L[cursor].Substring(1, L[cursor].Length - 1));
+                            if (L[cursor+1] <> 'set') 
+                            then whattodo := SingleSyntax
+                            else begin
+                                cursor := cursor + 2;
+                                if (LeftStr(L[cursor+1], 1) = '''') and (RightStr(L[cursor+1], 1) = '''') 
+                                then begin
+                                    nesttx := string_toC(L[cursor+1].Substring(1, L[cursor+1].Length - 2));
+                                    case L[cursor] of
+                                        'name' : doEditTagName(Database.Tags, id, nesttx);
+                                        'color' : doEditTagName(Database.Tags, id, nesttx);
+                                        else whattodo := SingleSyntax;
+                                    end;
+                                end else begin
+                                    writeln('Error: strings must be quoted.');
+                                    whattodo := SingleSyntax;
+                                end; 
+                            end;
+                        end else begin
+                            whattodo := SingleSyntax;
+                        end;
+                    end;
+
+                    case whattodo of
+                        AllSyntax : begin
+                            writeln('syntax: edit tag #ID set '); 
+                            writeln('                       | name NEWNAME');
+                            writeln('                       | color NEWCOLOR'); 
+                        end;
+                        SingleSyntax : begin
+                            writeln('syntax: edit tag #ID set '); 
+                            writeln('                       | name NEWNAME');
+                            writeln('                       | color NEWCOLOR'); 
+                        end;
+                        else ;
+                    end;
                 end;
             end;
             'get' : begin
@@ -210,15 +270,15 @@ begin
                 end;
                 case L[cursor] of
                     'tag' : begin
-                        whattoget := Tag1;
+                        whattodo := Tag1;
                         cursor := cursor + 1;
                     end;
                     'tags' : begin
-                        whattoget := Tags;
+                        whattodo := Tags;
                         cursor := cursor + 1;
                     end;
                     'database' : begin
-                        whattoget := Nothing;
+                        whattodo := Nothing;
                         case L[cursor+1] of
                             'location' : begin
                                 Database.getDBLocation();
@@ -226,7 +286,7 @@ begin
                         end;
                     end;
                     'db' : begin
-                        whattoget := Nothing;
+                        whattodo := Nothing;
                         case L[cursor+1] of
                             'location' : begin
                                 Database.getDBLocation();
@@ -234,21 +294,21 @@ begin
                         end;
                     end;
                     else begin 
-                        whattoget := AllSyntax;
+                        whattodo := AllSyntax;
                     end;
                 end;
 
-                if (whattoget <> Nothing) then
+                if (whattodo <> Nothing) then
                 begin
-                    if (whattoget in [Tag1]) then
+                    if (whattodo in [Tag1]) then
                     begin
                         if (cursor < Length(L)) and (LeftStr(L[cursor], 1) = '#') then
                         begin
                             nesttx := 'id='+RightStr(L[cursor], Length(L[cursor])-1);
                         end else begin
-                            whattoget := SingleSyntax;
+                            whattodo := SingleSyntax;
                         end;
-                    end else if (whattoget in [Tags]) then begin
+                    end else if (whattodo in [Tags]) then begin
                         nesttx := '';
                         if (cursor < Length(L)) then
                         begin
@@ -265,7 +325,7 @@ begin
                                             Inc(cursor);
                                         end;
                                     end else begin
-                                        whattoget := MultiSyntax;
+                                        whattodo := MultiSyntax;
                                     end;
                                 end; 
                                 'by' : begin
@@ -274,23 +334,23 @@ begin
                                             nesttx := 'Name LIKE '''+L[cursor+2]+'''';
                                         end;
                                         else begin
-                                            whattoget := MultiSyntax;
+                                            whattodo := MultiSyntax;
                                         end;
                                     end;
                                 end;
                                 else begin 
-                                    whattoget := MultiSyntax;
+                                    whattodo := MultiSyntax;
                                 end;
                             end;
                         end;
                     end; 
                     
-                    case whattoget of
+                    case whattodo of
                         Tags : doGetTags(Database.Tags, count, nesttx);
                         Tag1 : doGetTags(Database.Tags, 1, nesttx);
                         AllSyntax : begin
                             writeln('Syntax: get');
-                            writeln('          | tag #id');
+                            writeln('          | tag #ID');
                             writeln('          | [all|top N] tags ');
                             writeln('                           | [of (SQL_CONDTITIONS)]');
                             writeln('                           | [by name REGEXP]');
@@ -298,7 +358,7 @@ begin
                             writeln('          | db location');
                         end;
                         SingleSyntax : begin
-                            writeln('Syntax: get tag #id');
+                            writeln('Syntax: get tag #ID');
                         end;
                         MultiSyntax : begin
                             writeln('Syntax: get [all|top N] tags ');

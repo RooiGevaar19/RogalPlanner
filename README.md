@@ -23,16 +23,18 @@ Since 5/18/2020, proudly written in FreePascal :smile:
 
 **Tag management**:
 - `add tag 'name'`
+- `edit tag #ID set name 'STR'`
+- `edit tag #ID set color 'STR'`
 - `get tags`
 - `get all tags`
 - `get top N tags`
 - `get tags of (name='STR',color='Default')` – the expression between parentheses is SQL compatible
 - `get tags by name tasks-%` – filter tags by names starting with 'tasks-'
 - `get tags by name %foo%` – filter tags by names containing phrase 'foo'
-- `get tag #id`
+- `get tag #ID`
 - `get database location`
 - `get db location`
-- `delete tag #id`
+- `delete tag #ID`
 - `print 'text'`
 - `run file 'path_to_file'`
 
