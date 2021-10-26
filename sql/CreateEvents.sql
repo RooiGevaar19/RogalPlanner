@@ -3,7 +3,7 @@ CREATE TABLE Event(
     EventName VARCHAR(50) NOT NULL,
     EventDate DATETIME NOT NULL,
     RepeatsEvery SMALLINT NOT NULL DEFAULT 0,
-    Active SMALLINT NOT NULL DEFAULT 1,
+    Active SMALLINT NOT NULL DEFAULT 0,
     Info TEXT,
     BoundPeople VARCHAR(200),
     Address VARCHAR(200),
@@ -13,3 +13,4 @@ CREATE TABLE Event(
 
 -- CREATE UNIQUE INDEX "Event_id_idx" ON Event( "id" );
 
+-- EventName, EventDate, RepeatsEvery, Active, Info, BoundPeople, Address, Telephone, Mail

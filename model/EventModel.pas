@@ -4,7 +4,7 @@ unit EventModel;
 
 interface
 
-type EventState = (Corrupt, Obsolete, Inactive, Active);
+type EventState = (Corrupt, Obsolete, Inactive, Active, Unknown);
 
 type Event = class
     private
@@ -41,7 +41,32 @@ type Event = class
         function  getMail() : String;
 end;
 
+function EventStateToInt(x : EventState) : ShortInt;
+function IntToEventState(x : ShortInt) : EventState;
+
 implementation
+
+function eventStateToInt(x : EventState) : ShortInt;
+begin
+    case x of 
+        Unknown :  begin Result := -2; end;
+        Corrupt :  begin Result := -1; end;
+        Inactive : begin Result := 0; end;
+        Active :   begin Result := 1; end;
+        Obsolete : begin Result := 2; end;
+    end;
+end;
+
+function IntToEventState(x : ShortInt) : EventState;
+begin
+    case x of 
+        -2 : begin Result := Unknown; end;
+        -1 : begin Result := Corrupt; end;
+         0 : begin Result := Inactive; end;
+         1 : begin Result := Active; end;
+         2 : begin Result := Obsolete; end;
+    end;
+end;
 
 procedure Event.setID(val : LongInt);
 begin
